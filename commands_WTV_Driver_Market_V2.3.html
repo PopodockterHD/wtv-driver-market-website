@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="WTV Driver Market Commands – Erklärungen und Beispiele für V2.3 und V3.4.">
+  <link rel="icon" type="image/png" href="assets/wtv-driver-market-logo.png">
+  <title>Commands • WTV Driver Market</title>
+  <style>
+    :root {
+      --bg:#090b12; --panel:#111522; --text:#f5f7ff; --muted:#aab2c8;
+      --red:#d71920; --green:#169b62; --white:#f2f2f2; --line:rgba(255,255,255,.08);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at 18% 0%,rgba(215,25,32,.18),transparent 32%),
+        radial-gradient(circle at 82% 8%,rgba(22,155,98,.15),transparent 28%),
+        var(--bg);
+      color:var(--text);line-height:1.55}
+    a{color:inherit;text-decoration:none}
+    .container{width:min(1180px,calc(100% - 40px));margin:0 auto}
+    nav{position:sticky;top:0;z-index:30;background:rgba(9,11,18,.78);backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--line)}
+    .nav-inner{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800}
+    .brand img{width:42px;height:42px;object-fit:contain}
+    .nav-links{display:flex;gap:20px;color:var(--muted);font-size:14px}
+    .nav-links a:hover{color:var(--text)}
+    header{padding:76px 0 46px}
+    .eyebrow{display:inline-flex;padding:7px 12px;border-radius:999px;
+      border:1px solid rgba(22,155,98,.38);color:var(--white);
+      background:rgba(22,155,98,.11);font-size:13px;font-weight:800}
+    h1{font-size:clamp(42px,7vw,76px);line-height:1;margin:18px 0;letter-spacing:-.04em}
+    .lead{max-width:800px;color:var(--muted);font-size:18px}
+    .filters{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 30px}
+    .filter{border:1px solid var(--line);background:rgba(255,255,255,.035);color:var(--muted);
+      border-radius:999px;padding:10px 15px;font-weight:800;cursor:pointer;transition:.18s ease}
+    .filter:hover,.filter.active{background:rgba(215,25,32,.15);border-color:rgba(215,25,32,.42);
+      color:#fff;transform:translateY(-1px)}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding-bottom:80px}
+    .command-card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.018));
+      border:1px solid var(--line);border-radius:18px;padding:22px;cursor:pointer;transition:.2s ease;outline:none}
+    .command-card:hover,.command-card:focus{transform:translateY(-4px);border-color:rgba(215,25,32,.36);
+      box-shadow:0 18px 45px rgba(0,0,0,.24),0 0 0 1px rgba(22,155,98,.08)}
+    .command-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+    .command-top>code{font-size:20px;color:var(--white);background:rgba(215,25,32,.12);
+      border:1px solid rgba(215,25,32,.24);padding:5px 9px;border-radius:9px;font-weight:800}
+    .version-badge{font-size:11px;color:var(--muted);text-align:right;max-width:52%}
+    .command-card>p{color:#dce2f2;margin:18px 0 8px}
+    .role-line{color:var(--green);font-size:12px;font-weight:800}
+    .command-details{display:none;margin-top:18px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted)}
+    .command-card.open .command-details{display:block}
+    .example-label{font-size:12px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.06em;margin-top:15px}
+    pre{overflow:auto;background:#080a10;border:1px solid var(--line);border-radius:10px;padding:12px;color:var(--white)}
+    .hint{margin-bottom:22px;color:var(--muted);font-size:14px}
+    footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-size:13px}
+    @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:650px){.grid{grid-template-columns:1fr}.nav-links{display:none}}
+    @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <img src="assets/wtv-driver-market-logo.png" alt="WTV Driver Market Logo">
+        <span>WTV Driver Market</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Startseite</a>
+        <a href="commands.html">Commands</a>
+        <a href="index.html#changelog">Changelog</a>
+        <a href="index.html#download">Download</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="container">
+    <span class="eyebrow">COMMAND CENTER</span>
+    <h1>Alle Commands.<br>Einfach erklärt.</h1>
+    <p class="lead">
+      Filtere nach Berechtigung und klicke einen Command an, um Erklärung und Beispiel zu sehen.
+      V2.3 ist die stabile Hauptversion; V3.4 bleibt die erweiterte Entwicklungsversion.
+    </p>
+    <div class="filters">
+      <button class="filter active" data-filter="all">Alle</button>
+      <button class="filter" data-filter="public">Öffentlich</button>
+      <button class="filter" data-filter="transfer">Transferleitung</button>
+      <button class="filter" data-filter="admin">Admin</button>
+    </div>
+    <p class="hint">Hinweis: Derselbe Command kann in V2.3 und V3.4 unterschiedliche Berechtigungen besitzen.</p>
+  </header>
+
+  <main class="container">
+    <div class="grid" id="commandGrid">
+      
+      <article class="command-card" data-role="public" tabindex="0">
+        <div class="command-top">
+          <code>/drivermarket</code>
+          <span class="version-badge">V2.3 • V3.4</span>
+        </div>
+        <p>Fahrermarkt nach Teams.</p>
+        <div class="role-line">Öffentlich</div>
+        <div class="command-details">
+          <p>Zeigt die gespeicherten Fahrer teamweise mit Marktwert und Vertragsdaten.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/drivermarket</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="public" tabindex="0">
+        <div class="command-top">
+          <code>/alldrivers</code>
+          <span class="version-badge">V2.3 • V3.4</span>
+        </div>
+        <p>Kompakte Fahrerliste.</p>
+        <div class="role-line">Öffentlich</div>
+        <div class="command-details">
+          <p>Zeigt alle gespeicherten Fahrer in einer kompakten Übersicht.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/alldrivers</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="public" tabindex="0">
+        <div class="command-top">
+          <code>/driverinfo</code>
+          <span class="version-badge">V2.3 • V3.4</span>
+        </div>
+        <p>Komplettes Fahrerprofil.</p>
+        <div class="role-line">Öffentlich</div>
+        <div class="command-details">
+          <p>V2.3 zeigt Team, Marktwert, Vertrag, Gehalt, Boni sowie alle drei Klauselarten in einer übersichtlichen Reihenfolge.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/driverinfo fahrer:Mario</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="public" tabindex="0">
+        <div class="command-top">
+          <code>/help</code>
+          <span class="version-badge">V2.3 • V3.4</span>
+        </div>
+        <p>Command-Übersicht direkt in Discord.</p>
+        <div class="role-line">Öffentlich</div>
+        <div class="command-details">
+          <p>Zeigt die verfügbaren Befehle und deren Berechtigungsgruppen.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/help</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="public" tabindex="0">
+        <div class="command-top">
+          <code>/version</code>
+          <span class="version-badge">V2.3</span>
+        </div>
+        <p>Zeigt die laufende Bot-Version.</p>
+        <div class="role-line">Öffentlich</div>
+        <div class="command-details">
+          <p>Zeigt V2.3, den Speicherstatus und die aktuell synchronisierte Command-Anzahl.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/version</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="public" tabindex="0">
+        <div class="command-top">
+          <code>/seasonstatus</code>
+          <span class="version-badge">V2.3</span>
+        </div>
+        <p>Statistik einer Saison.</p>
+        <div class="role-line">Öffentlich</div>
+        <div class="command-details">
+          <p>Zeigt Teamwechsel, Marktwertänderungen, Vertragsänderungen, hinzugefügte und entfernte Fahrer sowie Audit-Einträge.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/seasonstatus saison:6</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="public" tabindex="0">
+        <div class="command-top">
+          <code>/topmarketvalue</code>
+          <span class="version-badge">V3.4</span>
+        </div>
+        <p>Ranking nach Marktwert.</p>
+        <div class="role-line">Öffentlich</div>
+        <div class="command-details">
+          <p>Zeigt die Fahrer mit den höchsten gespeicherten Marktwerten.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/topmarketvalue</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="public" tabindex="0">
+        <div class="command-top">
+          <code>/driverhistory</code>
+          <span class="version-badge">V3.4</span>
+        </div>
+        <p>Historie eines Fahrers.</p>
+        <div class="role-line">Öffentlich</div>
+        <div class="command-details">
+          <p>Zeigt gespeicherte Änderungen und wichtige Ereignisse eines Fahrers.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/driverhistory fahrer:Mario</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="public" tabindex="0">
+        <div class="command-top">
+          <code>/transfers</code>
+          <span class="version-badge">V3.4</span>
+        </div>
+        <p>Transfer-Historie.</p>
+        <div class="role-line">Öffentlich</div>
+        <div class="command-details">
+          <p>Zeigt die zuletzt gespeicherten Teamwechsel.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/transfers</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="admin transfer" tabindex="0">
+        <div class="command-top">
+          <code>/adddriver</code>
+          <span class="version-badge">V2.3 Admin • V3.4 Transferleitung</span>
+        </div>
+        <p>Fahrer hinzufügen.</p>
+        <div class="role-line">Transferleitung • Admin</div>
+        <div class="command-details">
+          <p>In V2.3 werden alle Werte direkt im Slash-Command eingetragen – ohne Popup. Marktwert, Gehalt und normale Ausstiegsklausel werden automatisch formatiert.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/adddriver fahrer:Mario marktwert:25 vertrag:3 ausstiegsklausel:50 gehalt:8 boni:1 Mio. pro Sieg</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="admin transfer" tabindex="0">
+        <div class="command-top">
+          <code>/editdriver</code>
+          <span class="version-badge">V2.3 Admin • V3.4 Transferleitung</span>
+        </div>
+        <p>Fahrerdaten bearbeiten.</p>
+        <div class="role-line">Transferleitung • Admin</div>
+        <div class="command-details">
+          <p>In V2.3 stehen alle änderbaren Felder direkt im Command. Nur ausgefüllte Felder werden geändert.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/editdriver fahrer:Mario marktwert:28 gehalt:9</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="admin transfer" tabindex="0">
+        <div class="command-top">
+          <code>/transferdriver</code>
+          <span class="version-badge">V2.3 Admin • V3.4 Transferleitung</span>
+        </div>
+        <p>Fahrer transferieren.</p>
+        <div class="role-line">Transferleitung • Admin</div>
+        <div class="command-details">
+          <p>Ändert das Team und die Discord-Teamrolle. In V2.3 können optionale Vertragswerte direkt beim Transfer angepasst werden.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/transferdriver fahrer:Mario neues_team:Ferrari</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="admin transfer" tabindex="0">
+        <div class="command-top">
+          <code>/removedriver</code>
+          <span class="version-badge">V2.3 Admin • V3.4 Transferleitung</span>
+        </div>
+        <p>Fahrer entfernen.</p>
+        <div class="role-line">Transferleitung • Admin</div>
+        <div class="command-details">
+          <p>Entfernt einen Fahrer aus dem Fahrermarkt. Die Aktion besitzt eine Sicherheitsabfrage.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/removedriver fahrer:Mario</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="transfer" tabindex="0">
+        <div class="command-top">
+          <code>/renewcontract</code>
+          <span class="version-badge">V3.4</span>
+        </div>
+        <p>Vertrag verlängern.</p>
+        <div class="role-line">Transferleitung</div>
+        <div class="command-details">
+          <p>Verlängert bzw. ersetzt die Vertragslaufzeit eines Fahrers.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/renewcontract fahrer:Mario</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="transfer" tabindex="0">
+        <div class="command-top">
+          <code>/setmarketvalue</code>
+          <span class="version-badge">V3.4</span>
+        </div>
+        <p>Marktwert setzen.</p>
+        <div class="role-line">Transferleitung</div>
+        <div class="command-details">
+          <p>Ändert gezielt den Marktwert eines Fahrers.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/setmarketvalue fahrer:Mario</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="transfer" tabindex="0">
+        <div class="command-top">
+          <code>/botstatus</code>
+          <span class="version-badge">V3.4</span>
+        </div>
+        <p>Technischer Botstatus.</p>
+        <div class="role-line">Transferleitung</div>
+        <div class="command-details">
+          <p>Prüft Bot, Speicher und bekannte Rollen sowie die Transferleitungsrolle.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/botstatus</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="admin" tabindex="0">
+        <div class="command-top">
+          <code>/saison</code>
+          <span class="version-badge">V2.3 • V3.4</span>
+        </div>
+        <p>Saisonnummer direkt setzen.</p>
+        <div class="role-line">Admin</div>
+        <div class="command-details">
+          <p>Setzt nur die Saisonnummer. Verträge werden dadurch nicht automatisch verändert.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/saison nummer:6</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="admin" tabindex="0">
+        <div class="command-top">
+          <code>/datastatus</code>
+          <span class="version-badge">V2.3</span>
+        </div>
+        <p>Daten- und Railway-Status.</p>
+        <div class="role-line">Admin</div>
+        <div class="command-details">
+          <p>Zeigt Fahrer, Transfers, Audit-Einträge, Speicherpfad und Backupstatus. Warnt, wenn kein Railway Volume erkannt wird.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/datastatus</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="admin" tabindex="0">
+        <div class="command-top">
+          <code>/auditlog</code>
+          <span class="version-badge">V2.3</span>
+        </div>
+        <p>Änderungsprotokoll.</p>
+        <div class="role-line">Admin</div>
+        <div class="command-details">
+          <p>Zeigt, wer wann welche Änderung am Fahrermarkt vorgenommen hat.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/auditlog anzahl:10</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="admin" tabindex="0">
+        <div class="command-top">
+          <code>/newseason</code>
+          <span class="version-badge">V3.4</span>
+        </div>
+        <p>Echten Saisonwechsel durchführen.</p>
+        <div class="role-line">Admin</div>
+        <div class="command-details">
+          <p>Erhöht die Saison und reduziert unterstützte Vertragslaufzeiten.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/newseason</code></pre>
+        </div>
+      </article>
+    
+      <article class="command-card" data-role="admin" tabindex="0">
+        <div class="command-top">
+          <code>/undoseason</code>
+          <span class="version-badge">V3.4</span>
+        </div>
+        <p>Letzten Saisonwechsel zurücknehmen.</p>
+        <div class="role-line">Admin</div>
+        <div class="command-details">
+          <p>Stellt den letzten von V3.4 gespeicherten Saisonwechsel wieder her.</p>
+          <div class="example-label">Beispiel</div>
+          <pre><code>/undoseason</code></pre>
+        </div>
+      </article>
+    
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">WTV Driver Market • V2.3 Hauptversion • V3.4 in Entwicklung</div>
+  </footer>
+
+  <script>
+    const filters = document.querySelectorAll('.filter');
+    const cards = document.querySelectorAll('.command-card');
+
+    filters.forEach(button => {
+      button.addEventListener('click', () => {
+        filters.forEach(b => b.classList.remove('active'));
+        button.classList.add('active');
+        const selected = button.dataset.filter;
+        cards.forEach(card => {
+          const roles = card.dataset.role.split(' ');
+          card.style.display = selected === 'all' || roles.includes(selected) ? '' : 'none';
+        });
+      });
+    });
+
+    cards.forEach(card => {
+      const toggle = () => card.classList.toggle('open');
+      card.addEventListener('click', toggle);
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
