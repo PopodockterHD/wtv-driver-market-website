@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="WTV Driver Market – Discord-Bot für Fahrer, Verträge, Transfers und Marktwerte." />
+  <title>WTV Driver Market</title>
+  <style>
+    :root {
+      --bg: #090b12;
+      --panel: #111522;
+      --panel-2: #171c2d;
+      --text: #f5f7ff;
+      --muted: #aab2c8;
+      --purple: #8c5cff;
+      --purple-2: #b58cff;
+      --line: rgba(255,255,255,.08);
+      --success: #55d58b;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(140,92,255,.18), transparent 34%),
+        radial-gradient(circle at 80% 10%, rgba(90,62,200,.14), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(1100px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+      background: rgba(9,11,18,.72);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+
+    .brand img {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .hero {
+      padding: 90px 0 70px;
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 54px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border: 1px solid rgba(140,92,255,.35);
+      border-radius: 999px;
+      color: var(--purple-2);
+      background: rgba(140,92,255,.08);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(44px, 7vw, 82px);
+      line-height: .96;
+      margin: 0 0 24px;
+      letter-spacing: -.045em;
+    }
+
+    h1 span {
+      background: linear-gradient(135deg, #ffffff 15%, var(--purple-2) 65%, var(--purple));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lead {
+      font-size: 19px;
+      color: var(--muted);
+      max-width: 720px;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 12px;
+      font-weight: 800;
+      border: 1px solid transparent;
+      transition: .18s ease;
+    }
+
+    .button.primary {
+      background: linear-gradient(135deg, var(--purple), #6f4be8);
+      box-shadow: 0 12px 36px rgba(140,92,255,.22);
+    }
+
+    .button.primary:hover { transform: translateY(-2px); }
+
+    .button.secondary {
+      background: rgba(255,255,255,.04);
+      border-color: var(--line);
+      color: #dce2f2;
+    }
+
+    .button.secondary:hover {
+      background: rgba(255,255,255,.07);
+    }
+
+    .hero-logo {
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero-logo img {
+      width: min(360px, 85vw);
+      filter: drop-shadow(0 24px 55px rgba(98,60,200,.25));
+    }
+
+    section {
+      padding: 72px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-size: 34px;
+      letter-spacing: -.02em;
+    }
+
+    .section-copy {
+      color: var(--muted);
+      margin: 0 0 30px;
+      max-width: 760px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.018));
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .command {
+      display: inline-block;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      color: #d7c7ff;
+      background: rgba(140,92,255,.10);
+      border: 1px solid rgba(140,92,255,.18);
+      padding: 3px 8px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .download-box {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .release {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 20px;
+      padding: 26px;
+    }
+
+    .release.latest {
+      border-color: rgba(140,92,255,.35);
+      box-shadow: inset 0 0 0 1px rgba(140,92,255,.08);
+    }
+
+    .release-badge {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--success);
+      margin-bottom: 12px;
+    }
+
+    .release h3 {
+      font-size: 27px;
+      margin: 0 0 8px;
+    }
+
+    .release p {
+      color: var(--muted);
+      margin: 0 0 20px;
+    }
+
+    .note {
+      margin-top: 24px;
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: rgba(140,92,255,.08);
+      border: 1px solid rgba(140,92,255,.18);
+      color: #d8d0ef;
+      font-size: 14px;
+    }
+
+    footer {
+      padding: 32px 0 45px;
+      color: #7f879d;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 820px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding-top: 65px;
+      }
+
+      .lead { margin-left: auto; margin-right: auto; }
+      .buttons { justify-content: center; }
+      .hero-logo { order: -1; }
+      .hero-logo img { width: 230px; }
+      .grid { grid-template-columns: 1fr; }
+      .download-box { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="container nav-inner">
+    <div class="brand">
+      <img src="assets/wtv-driver-market-logo.png" alt="WTV Driver Market Logo" />
+      <span>WTV Driver Market</span>
+    </div>
+    <div class="nav-links">
+      <a href="#features">Funktionen</a>
+      <a href="#commands">Commands</a>
+      <a href="#download">Download</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">🏎️ Discord Bot für F1-Ligen</div>
+      <h1>WTV<br><span>Driver Market</span></h1>
+      <p class="lead">
+        Ein einfacher Discord-Bot für Fahrermarkt, Verträge, Marktwerte und Transfers.
+        Entwickelt für eine übersichtliche Verwaltung direkt auf dem Discord-Server.
+      </p>
+      <div class="buttons">
+        <a class="button primary" href="downloads/WTV_Driver_Market_V3.zip" download>V3 herunterladen</a>
+        <a class="button secondary" href="#commands">Commands ansehen</a>
+      </div>
+    </div>
+
+    <div class="hero-logo">
+      <img src="assets/wtv-driver-market-logo.png" alt="WTV Driver Market" />
+    </div>
+  </div>
+</main>
+
+<section id="features">
+  <div class="container">
+    <h2 class="section-title">Was kann der Bot?</h2>
+    <p class="section-copy">
+      Der WTV Driver Market bündelt die wichtigsten Funktionen einer kleinen
+      Transfer- und Vertragsverwaltung in Discord-Slash-Commands.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>🏁 Fahrermarkt</h3>
+        <p>Teams und Fahrer übersichtlich anzeigen und durch den Markt blättern.</p>
+      </div>
+      <div class="card">
+        <h3>🔄 Transfers</h3>
+        <p>Fahrer transferieren, Teamrollen automatisch ändern und Transfers speichern.</p>
+      </div>
+      <div class="card">
+        <h3>📄 Verträge</h3>
+        <p>Vertragslaufzeit, Gehalt, Boni und Ausstiegsklauseln verwalten.</p>
+      </div>
+      <div class="card">
+        <h3>💰 Marktwerte</h3>
+        <p>Marktwerte bearbeiten und die wertvollsten Fahrer anzeigen.</p>
+      </div>
+      <div class="card">
+        <h3>📚 Historie</h3>
+        <p>Transfers und Änderungen eines Fahrers nachvollziehen.</p>
+      </div>
+      <div class="card">
+        <h3>🌐 24/7 Hosting</h3>
+        <p>Kann beispielsweise auf Railway gehostet werden und läuft unabhängig vom eigenen PC.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="commands">
+  <div class="container">
+    <h2 class="section-title">Commands</h2>
+    <p class="section-copy">
+      Die aktuelle V3 enthält öffentliche Commands sowie Verwaltungs- und Saison-Commands.
+    </p>
+
+    <div class="grid">
+      <div class="card"><div class="command">/drivermarket</div><p>Zeigt den Fahrermarkt nach Teams.</p></div>
+      <div class="card"><div class="command">/alldrivers</div><p>Zeigt alle Fahrer kompakt in einer Liste.</p></div>
+      <div class="card"><div class="command">/driverinfo</div><p>Zeigt alle gespeicherten Informationen zu einem Fahrer.</p></div>
+      <div class="card"><div class="command">/adddriver</div><p>Fügt einen Fahrer hinzu oder aktualisiert ihn.</p></div>
+      <div class="card"><div class="command">/editdriver</div><p>Ändert einzelne Fahrer- und Vertragsdaten.</p></div>
+      <div class="card"><div class="command">/transferdriver</div><p>Transferiert einen Fahrer zu einem anderen Team oder auf Frei.</p></div>
+      <div class="card"><div class="command">/removedriver</div><p>Entfernt einen Fahrer komplett aus dem Markt.</p></div>
+      <div class="card"><div class="command">/topmarketvalue</div><p>Zeigt die Fahrer mit dem höchsten Marktwert.</p></div>
+      <div class="card"><div class="command">/renewcontract</div><p>Verlängert oder erneuert einen Vertrag.</p></div>
+      <div class="card"><div class="command">/setmarketvalue</div><p>Ändert gezielt den Marktwert eines Fahrers.</p></div>
+      <div class="card"><div class="command">/driverhistory</div><p>Zeigt die gespeicherte Historie eines Fahrers.</p></div>
+      <div class="card"><div class="command">/transfers</div><p>Zeigt die letzten Transfers der Liga.</p></div>
+      <div class="card"><div class="command">/newseason</div><p>Startet eine neue Saison mit Bestätigung.</p></div>
+      <div class="card"><div class="command">/undoseason</div><p>Macht den letzten Saisonwechsel rückgängig.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="download">
+  <div class="container">
+    <h2 class="section-title">Download</h2>
+    <p class="section-copy">
+      Lade die aktuelle Version oder die vorherige Version des Bots herunter.
+    </p>
+
+    <div class="download-box">
+      <div class="release latest">
+        <div class="release-badge">Aktuelle Version</div>
+        <h3>WTV Driver Market V3</h3>
+        <p>
+          Erweiterte Version mit 14 Commands, Historie, Transfers, Saison-System
+          und verbessertem Design.
+        </p>
+        <a class="button primary" href="downloads/WTV_Driver_Market_V3.zip" download>V3 herunterladen</a>
+      </div>
+
+      <div class="release">
+        <div class="release-badge" style="color:#aab2c8">Vorherige Version</div>
+        <h3>WTV Driver Market V2.1</h3>
+        <p>
+          Einfachere Version mit 7 Commands. Änderungs-Commands sind auf
+          Discord-Administratoren beschränkt.
+        </p>
+        <a class="button secondary" href="downloads/WTV_Driver_Market_V2.1.zip" download>V2.1 herunterladen</a>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Hinweis:</strong> Zum Betrieb benötigt der Bot einen eigenen Discord-Bot-Token
+      und muss entsprechend der README eingerichtet und gehostet werden.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    WTV Driver Market • Discord-Bot für Fahrermarkt & Transfers
+  </div>
+</footer>
+
+</body>
+</html>
