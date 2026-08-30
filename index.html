@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0b0d">
+  <title>WTV Bots</title>
+  <style>
+    :root{
+      --bg:#08090b;
+      --bg2:#0d1014;
+      --card:#12151b;
+      --card2:#171b22;
+      --text:#f6f7f9;
+      --muted:#a8afbc;
+      --red:#e11922;
+      --green:#169b62;
+      --line:rgba(255,255,255,.08);
+      --discord:#5865F2;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 12% 0%,rgba(225,25,34,.14),transparent 28rem),
+        radial-gradient(circle at 90% 35%,rgba(22,155,98,.08),transparent 26rem),
+        var(--bg);
+      line-height:1.6;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{width:min(1180px,calc(100% - 36px));margin:auto}
+    nav{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter:blur(18px);
+      background:rgba(8,9,11,.78);
+      border-bottom:1px solid var(--line)
+    }
+    .nav-inner{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.4px}
+    .brand-mark{
+      width:38px;height:38px;border-radius:11px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--red),#7e0d12);
+      box-shadow:0 8px 25px rgba(225,25,34,.25);
+      font-weight:1000;
+    }
+    .nav-links{display:flex;gap:22px;color:#cbd0da;font-size:14px;font-weight:700}
+    .nav-links a:hover{color:#fff}
+    .hero{padding:92px 0 58px;text-align:center}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid var(--line);border-radius:999px;
+      padding:7px 12px;color:#d8dce4;background:rgba(255,255,255,.035);
+      font-size:12px;font-weight:900;letter-spacing:.9px;text-transform:uppercase
+    }
+    h1{font-size:clamp(48px,9vw,94px);line-height:.92;margin:26px 0 22px;letter-spacing:-4px}
+    h1 span{color:var(--red)}
+    .lead{max-width:780px;margin:0 auto;color:var(--muted);font-size:19px}
+    .hero-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:28px}
+    .pill{padding:8px 11px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:12px;font-weight:800;color:#dfe3eb}
+    section{padding:72px 0}
+    .section-heading{max-width:760px;margin-bottom:30px}
+    .section-heading.center{margin:0 auto 34px;text-align:center}
+    .section-heading h2{font-size:clamp(32px,5vw,52px);line-height:1.05;margin:10px 0 12px;letter-spacing:-1.7px}
+    .section-heading p{color:var(--muted);margin:0}
+    .bot-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+    .bot-card{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
+      border-radius:24px;overflow:hidden;
+      box-shadow:0 28px 70px rgba(0,0,0,.22);
+      transition:.2s ease;
+    }
+    .bot-card:hover{transform:translateY(-4px);border-color:rgba(225,25,34,.28)}
+    .banner{aspect-ratio:17/6;background:#080808;overflow:hidden;border-bottom:1px solid var(--line)}
+    .banner img{width:100%;height:100%;object-fit:cover;display:block}
+    .bot-body{padding:26px}
+    .bot-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+    .bot-top h3{font-size:30px;line-height:1.05;margin:0 0 7px}
+    .status{font-size:11px;font-weight:950;border-radius:999px;padding:7px 9px;white-space:nowrap}
+    .status.live{background:rgba(22,155,98,.13);color:#60d99f;border:1px solid rgba(22,155,98,.25)}
+    .status.new{background:rgba(225,25,34,.12);color:#ff7278;border:1px solid rgba(225,25,34,.24)}
+    .bot-body p{color:var(--muted)}
+    .feature-tags{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 24px}
+    .feature-tags span{font-size:11px;font-weight:850;border:1px solid var(--line);padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.025)}
+    .buttons{display:flex;flex-wrap:wrap;gap:10px}
+    .button{
+      display:inline-flex;align-items:center;justify-content:center;
+      min-height:44px;padding:0 16px;border-radius:11px;
+      font-weight:900;font-size:13px;border:1px solid transparent;
+      transition:.18s ease;
+    }
+    .button:hover{transform:translateY(-2px);filter:brightness(1.08)}
+    .discord{background:var(--discord);color:#fff}
+    .secondary{border-color:var(--line);background:rgba(255,255,255,.045)}
+    .detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .detail{
+      background:var(--card);border:1px solid var(--line);border-radius:17px;padding:19px
+    }
+    .detail h3{margin:0 0 7px;font-size:17px}
+    .detail p{margin:0;color:var(--muted);font-size:14px}
+    .commands-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .command-box{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:24px}
+    .command-box h3{font-size:23px;margin:0 0 15px}
+    .command-list{display:grid;gap:8px}
+    .command{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.045);border-radius:11px;padding:10px 12px;color:#cbd0db;font-size:13px}
+    code{color:#fff;font-weight:800}
+    .install{
+      border:1px solid rgba(225,25,34,.22);
+      background:
+        radial-gradient(circle at 5% 0%,rgba(225,25,34,.16),transparent 30%),
+        var(--card);
+      border-radius:24px;padding:32px
+    }
+    .install-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:24px}
+    .install-card{padding:22px;border-radius:18px;border:1px solid var(--line);background:rgba(0,0,0,.16)}
+    .install-card h3{margin-top:0}
+    .footer{padding:38px 0 46px;border-top:1px solid var(--line);color:#868e9e;font-size:13px;text-align:center}
+    @media(max-width:900px){
+      .bot-grid,.commands-grid,.install-grid{grid-template-columns:1fr}
+      .detail-grid{grid-template-columns:1fr 1fr}
+      .nav-links{display:none}
+    }
+    @media(max-width:600px){
+      .detail-grid{grid-template-columns:1fr}
+      h1{letter-spacing:-2px}
+      .hero{padding-top:68px}
+      .bot-body{padding:20px}
+      .bot-top{display:block}
+      .status{display:inline-block;margin-top:10px}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="container nav-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark">W</span>
+      <span>WTV Bots</span>
+    </a>
+    <div class="nav-links">
+      <a href="#bots">Bots</a>
+      <a href="#prediction">Prediction</a>
+      <a href="#commands">Commands</a>
+      <a href="#installation">Installation</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero container" id="top">
+  <div class="eyebrow">🏁 WTV Discord Tools</div>
+  <h1>WTV <span>Bots</span></h1>
+  <p class="lead">
+    Zwei Discord-Bots für den WTV-Server: Driver Market für Fahrer, Verträge und Transfers –
+    und Prediction für Tipps, Rennwochenenden und eine eigene Prediction-Meisterschaft.
+  </p>
+  <div class="hero-pills">
+    <span class="pill">☁️ Railway 24/7</span>
+    <span class="pill">⚡ Discord Slash Commands</span>
+    <span class="pill">🏎️ Für WTV entwickelt</span>
+    <span class="pill">📅 Stand 30.08.2026</span>
+  </div>
+</header>
+
+<main>
+<section id="bots">
+  <div class="container">
+    <div class="section-heading center">
+      <div class="eyebrow">Unsere Bots</div>
+      <h2>Zwei Tools, ein WTV-System</h2>
+      <p>Beide Bots bleiben technisch getrennt, sind aber auf derselben Website übersichtlich erreichbar.</p>
+    </div>
+
+    <div class="bot-grid">
+      <article class="bot-card">
+        <div class="banner"><img src="assets/driver-market-banner.png" alt="WTV Driver Market Banner"></div>
+        <div class="bot-body">
+          <div class="bot-top">
+            <div>
+              <h3>WTV Driver Market</h3>
+              <strong>Fahrermarkt & Liga-Verwaltung</strong>
+            </div>
+            <span class="status live">● LIVE</span>
+          </div>
+          <p>
+            Fahrer, Teams, Marktwerte, Verträge, Transfers, Historie und Saisonverwaltung direkt über Discord.
+            Die stabile WTV-Version läuft 24/7 über Railway.
+          </p>
+          <div class="feature-tags">
+            <span>Fahrermarkt</span><span>Verträge</span><span>Transfers</span>
+            <span>Marktwerte</span><span>Historie</span><span>Saison</span>
+          </div>
+          <div class="buttons">
+            <a class="button discord" href="https://discord.com/oauth2/authorize?client_id=1542611010941231144" target="_blank" rel="noopener">➕ Driver Market hinzufügen</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="bot-card" id="prediction">
+        <div class="banner"><img src="assets/prediction-banner.png" alt="WTV Prediction Banner"></div>
+        <div class="bot-body">
+          <div class="bot-top">
+            <div>
+              <h3>WTV Prediction</h3>
+              <strong>Race Weekend Predictions</strong>
+            </div>
+            <span class="status new">V4</span>
+          </div>
+          <p>
+            Servermitglieder direkt als Fahrer auswählen und Pole, Podium, Fastest Lap, DNF,
+            Safety Car, optionale Sprint-Ergebnisse und Bonusfragen tippen. Mit Gesamtwertung,
+            Historie und optionalem automatischen Tippschluss.
+          </p>
+          <div class="feature-tags">
+            <span>Pole</span><span>Podium</span><span>Fastest Lap</span>
+            <span>DNF</span><span>Safety Car</span><span>Sprint optional</span>
+            <span>Bonusfragen</span><span>Standings</span>
+          </div>
+          <div class="buttons">
+            <a class="button discord" href="https://discord.com/oauth2/authorize?client_id=1543623325778182235" target="_blank" rel="noopener">➕ Prediction Bot hinzufügen</a>
+            <a class="button secondary" href="downloads/WTV_Prediction_Bot_V4.zip" download>⬇ V4 herunterladen</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-heading">
+      <div class="eyebrow">Prediction V4</div>
+      <h2>Was kann der Prediction Bot?</h2>
+      <p>Die Fahrerauswahl kommt direkt aus den menschlichen Mitgliedern des Discord-Servers – eine manuell gepflegte Fahrerliste ist nicht mehr nötig.</p>
+    </div>
+    <div class="detail-grid">
+      <div class="detail"><h3>🎯 Renn-Tipps</h3><p>Pole, P1, P2, P3 und Fastest Lap direkt über Discord-Mitglieder auswählen.</p></div>
+      <div class="detail"><h3>💥 DNF</h3><p>Optional einen DNF-Fahrer tippen oder das Feld leer lassen, wenn kein DNF erwartet wird.</p></div>
+      <div class="detail"><h3>🚨 Safety Car</h3><p>Ja/Nein-Prediction für mindestens ein Safety Car im Rennen.</p></div>
+      <div class="detail"><h3>⚡ Sprint</h3><p>Beim Erstellen einer Runde wird Sprint Ja/Nein gewählt. Sprint-Tipps sind nur dann verpflichtend, wenn es einen Sprint gibt.</p></div>
+      <div class="detail"><h3>🎁 Bonusfragen</h3><p>Die Predictionleitung kann eigene Zwei-Antwort-Fragen mit frei definierbaren Punkten erstellen.</p></div>
+      <div class="detail"><h3>⏰ Flexible Deadline</h3><p>Deadline freiwillig. Ohne Deadline bleibt die Runde offen; mit Deadline gibt es automatische Erinnerungen und Schließung.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="commands">
+  <div class="container">
+    <div class="section-heading">
+      <div class="eyebrow">Slash Commands</div>
+      <h2>Prediction Commands</h2>
+      <p>Die wichtigsten Commands der aktuellen V4.</p>
+    </div>
+    <div class="commands-grid">
+      <div class="command-box">
+        <h3>👥 Für alle</h3>
+        <div class="command-list">
+          <div class="command"><code>/predict</code> – Tipp abgeben oder ändern</div>
+          <div class="command"><code>/bonuspredict</code> – Bonusfrage beantworten</div>
+          <div class="command"><code>/myprediction</code> – eigenen Tipp ansehen</div>
+          <div class="command"><code>/predictioninfo</code> – aktuelle Runde</div>
+          <div class="command"><code>/predictionstandings</code> – Gesamtwertung</div>
+          <div class="command"><code>/predictionhistory</code> – vergangene Runden</div>
+          <div class="command"><code>/bonusquestions</code> – Bonusfragen anzeigen</div>
+          <div class="command"><code>/predictionhelp</code> – Hilfe</div>
+        </div>
+      </div>
+      <div class="command-box">
+        <h3>🛠️ Predictionleitung / Admin</h3>
+        <div class="command-list">
+          <div class="command"><code>/newprediction</code> – neue Runde erstellen</div>
+          <div class="command"><code>/addbonusquestion</code> – Bonusfrage hinzufügen</div>
+          <div class="command"><code>/setbonusanswer</code> – Bonusfrage auswerten</div>
+          <div class="command"><code>/closeprediction</code> – Tipps manuell schließen</div>
+          <div class="command"><code>/setpredictionresult</code> – Ergebnis eintragen & auswerten</div>
+          <div class="command"><code>/allpredictions</code> – alle Tipps ansehen</div>
+          <div class="command"><code>/deletepredictionround</code> – Test-/Fehlerrunde löschen</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="installation">
+  <div class="container">
+    <div class="install">
+      <div class="section-heading">
+        <div class="eyebrow">Discord Installation</div>
+        <h2>Bot auswählen und hinzufügen</h2>
+        <p>Beide Buttons öffnen direkt die jeweilige Discord-Autorisierung.</p>
+      </div>
+      <div class="install-grid">
+        <div class="install-card">
+          <h3>🏎️ Driver Market</h3>
+          <p>Für Fahrermarkt, Verträge, Marktwerte, Transfers und Liga-Verwaltung.</p>
+          <a class="button discord" href="https://discord.com/oauth2/authorize?client_id=1542611010941231144" target="_blank" rel="noopener">➕ Zu Discord hinzufügen</a>
+        </div>
+        <div class="install-card">
+          <h3>🎯 Prediction</h3>
+          <p>Für Renn-Tipps, Prediction-Championship, Bonusfragen und Rennwochenenden.</p>
+          <a class="button discord" href="https://discord.com/oauth2/authorize?client_id=1543623325778182235" target="_blank" rel="noopener">➕ Zu Discord hinzufügen</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container">WTV Bots • Driver Market + Prediction • Stand 30.08.2026</div>
+</footer>
+</body>
+</html>
