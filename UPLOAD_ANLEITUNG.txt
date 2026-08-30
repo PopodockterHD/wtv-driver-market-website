@@ -1,0 +1,26 @@
+WTV BOTS WEBSITE – GITHUB ROOT FIX
+
+Diese Version ist genau für die Struktur gedacht, die auf deinem Screenshot zu sehen ist.
+
+ALLE Dateien kommen direkt in den Hauptordner des GitHub-Repositories:
+
+README.txt
+WTV_Prediction_Bot_V1.zip
+commands.html
+driver-market-banner.png
+index.html
+prediction-banner.png
+prediction-icon.png
+wtv-bots-logo.png
+wtv-driver-market-logo.png
+
+Es werden KEINE Unterordner wie assets/ oder downloads/ benötigt.
+
+Warum die alte Version nicht funktioniert hat:
+Die HTML-Dateien suchten z.B.
+assets/driver-market-banner.png
+
+Auf GitHub lag die Datei aber als:
+driver-market-banner.png
+
+Diese FIX-Version verwendet nun die korrekten Root-Pfade.
