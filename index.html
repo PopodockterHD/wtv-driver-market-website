@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="WTV Bots – Website für WTV Driver Market und WTV Prediction.">
+<link rel="icon" type="image/png" href="wtv-bots-logo.png">
+<title>WTV Bots</title>
+<style>
+:root{
+  --bg:#090b0d; --bg2:#0e1216; --panel:#12171d; --panel2:#171d24; --text:#f6f7f9; --muted:#aab2bf;
+  --red:#d71920; --green:#169b62; --white:#ffffff; --line:rgba(255,255,255,.085); --discord:#5865f2;
+  --gold:#f0b35a; --blue:#7dc4ff;
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);
+background:radial-gradient(circle at 12% 0%,rgba(215,25,32,.18),transparent 28rem),radial-gradient(circle at 88% 15%,rgba(22,155,98,.13),transparent 28rem),linear-gradient(180deg,#090b0d,#08090c 45%,#090b0d);
+line-height:1.6;}
+a{color:inherit;text-decoration:none}
+.container{width:min(1180px,calc(100% - 36px));margin:auto}
+nav{position:sticky;top:0;z-index:90;border-bottom:1px solid var(--line);background:rgba(9,11,13,.84);backdrop-filter:blur(18px)}
+.nav-inner{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:22px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:900}
+.brand img{width:40px;height:40px;border-radius:12px}
+.brand .small{font-size:14px;color:#fff}
+.nav-links{display:flex;gap:18px;font-size:13px;font-weight:800;color:#cbd3dd}
+.nav-links a:hover{color:#fff}
+.hero{padding:84px 0 54px;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.035);font-size:11px;font-weight:950;letter-spacing:1px;text-transform:uppercase}
+h1{font-size:clamp(52px,9vw,94px);line-height:.94;margin:25px 0 18px;letter-spacing:-4px}
+.w{color:var(--green)} .t{color:var(--white)} .v{color:var(--red)} .bots{color:#dfe5ec}
+.lead{max-width:820px;margin:auto;color:var(--muted);font-size:19px}
+.pills{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:26px}
+.pill{padding:7px 11px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:11px;font-weight:850;color:#dfe4ea}
+section{padding:72px 0;scroll-margin-top:80px}
+.section-heading{max-width:810px;margin-bottom:28px}
+.section-heading.center{text-align:center;margin:0 auto 34px}
+.section-heading h2{margin:9px 0 11px;font-size:clamp(32px,5vw,54px);line-height:1.05;letter-spacing:-1.9px}
+.section-heading p{margin:0;color:var(--muted)}
+.card-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.choice-card,.panel{border:1px solid var(--line);border-radius:24px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));box-shadow:0 28px 70px rgba(0,0,0,.22)}
+.choice-card{transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.choice-card:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.15);box-shadow:0 34px 90px rgba(0,0,0,.3)}
+.banner{aspect-ratio:17/6;background:#050607;border-bottom:1px solid var(--line);overflow:hidden}
+.banner img{display:block;width:100%;height:100%;object-fit:cover}
+.choice-body{padding:24px}
+.choice-top{display:flex;align-items:start;justify-content:space-between;gap:14px}
+.choice-top h3{margin:0 0 6px;font-size:30px;line-height:1.04}
+.choice-body p{color:var(--muted)}
+.status{display:inline-block;padding:6px 9px;border-radius:999px;font-size:10px;font-weight:950;white-space:nowrap}
+.status.live{color:#67dba5;background:rgba(22,155,98,.12);border:1px solid rgba(22,155,98,.26)}
+.status.new{color:#ff8b90;background:rgba(215,25,32,.12);border:1px solid rgba(215,25,32,.26)}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin:18px 0 22px}
+.tags span{padding:6px 8px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);font-size:10px;font-weight:850;color:#dfe4eb}
+.buttons{display:flex;flex-wrap:wrap;gap:10px}
+.button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 15px;border-radius:11px;border:1px solid transparent;font-size:12px;font-weight:950;transition:transform .17s ease,filter .17s ease,border-color .17s ease}
+.button:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.button.discord{background:var(--discord);color:#fff} .button.secondary{background:rgba(255,255,255,.045);border-color:var(--line)} .button.red{background:var(--red)} .button.green{background:var(--green)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--green),#fff,var(--red),transparent);opacity:.48;width:min(1180px,calc(100% - 36px));margin:auto}
+.hero-split{display:grid;grid-template-columns:1.04fr .96fr;gap:34px;align-items:center}
+.hero-split h2{font-size:clamp(42px,6vw,70px);line-height:.96;letter-spacing:-3px;margin:12px 0 17px}
+.hero-split p{color:var(--muted);font-size:17px}
+.logo-card{display:flex;justify-content:center;align-items:center;min-height:300px;padding:24px}
+.logo-card img{width:min(320px,85%);filter:drop-shadow(0 18px 40px rgba(0,0,0,.28))}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.info-card{border:1px solid var(--line);background:var(--panel);border-radius:17px;padding:20px;transition:transform .18s ease,border-color .18s ease,background .18s ease}
+.info-card:hover{transform:translateY(-4px);border-color:rgba(215,25,32,.3);background:linear-gradient(180deg,rgba(215,25,32,.07),rgba(255,255,255,.02))}
+.info-card.green:hover{border-color:rgba(22,155,98,.34);background:linear-gradient(180deg,rgba(22,155,98,.07),rgba(255,255,255,.02))}
+.info-card h3{margin:0 0 8px;font-size:17px} .info-card p{margin:0;color:var(--muted);font-size:14px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.step{border:1px solid var(--line);background:var(--panel);border-radius:16px;padding:19px}
+.step-number{width:33px;height:33px;border-radius:10px;display:grid;place-items:center;margin-bottom:13px;font-weight:1000;background:linear-gradient(135deg,var(--green),var(--red));color:#fff}
+.step h3{margin:0 0 7px;font-size:16px} .step p{margin:0;color:var(--muted);font-size:13px}
+.note{margin-top:16px;padding:16px 18px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--muted);font-size:14px}
+.note strong{color:#fff}
+.command-groups{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.command-group{border:1px solid var(--line);background:var(--panel);border-radius:20px;padding:22px}
+.command-group h3{margin:0 0 15px;font-size:22px}
+.command-list{display:grid;gap:8px}
+.command{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border:1px solid rgba(255,255,255,.055);background:rgba(255,255,255,.03);border-radius:11px;transition:transform .16s ease,background .16s ease,border-color .16s ease}
+.command .command-main{display:flex;flex-direction:column;gap:3px}
+.command code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#fff;font-weight:850}
+.command span{color:#c1c9d5;font-size:13px}
+.command:hover{transform:translateX(5px);background:rgba(215,25,32,.1);border-color:rgba(215,25,32,.25)}
+.command.pred:hover{background:rgba(22,155,98,.1);border-color:rgba(22,155,98,.28)}
+.badge{flex:0 0 auto;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:950;letter-spacing:.4px;text-transform:uppercase}
+.badge.stable{background:rgba(22,155,98,.12);color:#67dba5;border:1px solid rgba(22,155,98,.28)}
+.badge.v3{background:rgba(240,179,90,.12);color:#f0b35a;border:1px solid rgba(240,179,90,.28)}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.timeline{display:grid;gap:10px}
+.timeline-item{display:grid;grid-template-columns:125px 1fr;gap:17px;padding:15px 17px;border-radius:14px;border:1px solid var(--line);background:var(--panel)}
+.timeline-version{font-size:12px;font-weight:950;color:#fff} .timeline-item p{margin:0;color:var(--muted);font-size:14px}
+.timeline-item.current{border-color:rgba(22,155,98,.28);background:rgba(22,155,98,.045)}
+.timeline-item.dev{border-color:rgba(240,179,90,.25);background:rgba(240,179,90,.035)}
+.faq{display:grid;gap:10px}
+details{border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:14px 16px}
+summary{cursor:pointer;font-weight:850} details p{margin:10px 0 2px;color:var(--muted);font-size:14px}
+.install-shell{border-radius:24px;border:1px solid rgba(255,255,255,.1);padding:30px;background:radial-gradient(circle at 0% 0%,rgba(215,25,32,.14),transparent 34%),radial-gradient(circle at 100% 100%,rgba(22,155,98,.11),transparent 34%),var(--panel)}
+.install-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:23px}
+.install-card{border:1px solid var(--line);background:rgba(0,0,0,.13);border-radius:17px;padding:21px}
+.install-card h3{margin:0 0 7px} .install-card p{color:var(--muted);font-size:14px}
+footer{padding:38px 0 46px;border-top:1px solid var(--line);text-align:center;color:#85909c;font-size:12px}
+@media(max-width:920px){.nav-links{display:none}.card-grid-2,.hero-split,.command-groups,.install-grid{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr 1fr}.logo-card{order:-1}}
+@media(max-width:620px){.grid,.steps{grid-template-columns:1fr}.hero{padding-top:66px}h1{letter-spacing:-2.4px}.choice-top{display:block}.status{margin-top:9px}.timeline-item{grid-template-columns:1fr;gap:4px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="container nav-inner">
+    <a class="brand" href="#top">
+      <img src="wtv-bots-logo.png" alt="WTV Bots Logo">
+      <span class="small">WTV Bots</span>
+    </a>
+    <div class="nav-links">
+      <a href="#bots">Bots</a>
+      <a href="#driver-market">Driver Market</a>
+      <a href="#driver-commands">DM Commands</a>
+      <a href="#prediction">Prediction</a>
+      <a href="#prediction-commands">Prediction Commands</a>
+      <a href="commands.html">Command-Seite</a>
+      <a href="#installation">Installation</a>
+  </div>
+  </div>
+</nav>
+
+<header class="hero container" id="top">
+  <div class="eyebrow">🏁 WTV Discord Tools</div>
+  <h1><span class="w">W</span><span class="t">T</span><span class="v">V</span> <span class="bots">Bots</span></h1>
+  <p class="lead">
+    Die gemeinsame Website für unsere Discord-Bots. Hier findest du den offiziellen
+    <strong>WTV Driver Market</strong> und <strong>WTV Prediction</strong> inklusive Funktionen,
+    Commands, Versionen und Discord-Installationslinks.
+  </p>
+  <div class="pills">
+    <span class="pill">☁️ 24/7 über Railway</span>
+    <span class="pill">⚡ Slash Commands</span>
+  </div>
+</header>
+
+<section id="bots">
+  <div class="container">
+    <div class="section-heading center">
+      <div class="eyebrow">Unsere Bots</div>
+      <h2>Wähle deinen WTV Bot</h2>
+      <p>Oben schnell installieren – weiter unten alle Details, Command-Listen und Versionsinfos.</p>
+    </div>
+    <div class="card-grid-2">
+      <article class="choice-card">
+        <div class="banner"><img src="driver-market-banner.png" alt="WTV Driver Market Banner"></div>
+        <div class="choice-body">
+          <div class="choice-top">
+            <div><h3>WTV Driver Market</h3><strong>Fahrermarkt & Liga-Verwaltung</strong></div>
+            <span class="status live">● V2.3 STABIL</span>
+          </div>
+          <p>Fahrer, Teams, Verträge, Marktwerte, Transfers, Historie und Saisonfunktionen direkt über Discord.</p>
+          <div class="tags">
+            <span>Fahrermarkt</span><span>Transfers</span><span>Verträge</span><span>Marktwerte</span><span>Historie</span>
+          </div>
+          <div class="buttons">
+            <a class="button discord" href="https://discord.com/oauth2/authorize?client_id=1542611010941231144" target="_blank" rel="noopener">➕ Zu Discord hinzufügen</a>
+            <a class="button secondary" href="#driver-commands">⌨ Commands ansehen</a>
+            <a class="button secondary" href="#driver-market">Mehr erfahren ↓</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="choice-card">
+        <div class="banner"><img src="prediction-banner.png" alt="WTV Prediction Banner"></div>
+        <div class="choice-body">
+          <div class="choice-top">
+            <div><h3>WTV Prediction</h3><strong>Race Weekend Predictions</strong></div>
+            <span class="status new">● V1</span>
+          </div>
+          <p>Pole, Podium, Fastest Lap, DNF, Safety Car, Sprint, Bonusfragen, Erinnerungen und Gesamtwertung.</p>
+          <div class="tags">
+            <span>Prediction</span><span>Leaderboard</span><span>Sprint optional</span><span>Bonusfragen</span><span>Saison-Reset</span>
+          </div>
+          <div class="buttons">
+            <a class="button discord" href="https://discord.com/oauth2/authorize?client_id=1543623325778182235" target="_blank" rel="noopener">➕ Zu Discord hinzufügen</a>
+            <a class="button secondary" href="#prediction-commands">⌨ Commands ansehen</a>
+            <a class="button secondary" href="#prediction">Mehr erfahren ↓</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="driver-market">
+  <div class="container">
+    <div class="hero-split">
+      <div>
+        <div class="eyebrow">🏎️ WTV Driver Market</div>
+        <h2>Der Fahrermarkt direkt in Discord</h2>
+        <p>
+          Der WTV Driver Market bündelt Fahrer-, Team-, Vertrags- und Transferverwaltung in Slash Commands.
+          Teamrollen können automatisch erkannt und bei Transfers angepasst werden; Fahrer ohne bekannte
+          Teamrolle können als Free Agents behandelt werden.
+        </p>
+        <div class="buttons">
+          <a class="button discord" href="https://discord.com/oauth2/authorize?client_id=1542611010941231144" target="_blank" rel="noopener">➕ Driver Market hinzufügen</a>
+          <a class="button secondary" href="#driver-commands">⌨ Commands</a>
+          <a class="button secondary" href="commands.html#dm">🗂 Command-Seite</a>
+        </div>
+      </div>
+      <div class="panel logo-card">
+        <img src="wtv-driver-market-logo.png" alt="WTV Driver Market Logo">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-heading">
+      <div class="eyebrow">V2.3 Release</div>
+      <h2>Die offizielle Hauptversion ist <span style="color:var(--green)">V2.3</span></h2>
+      <p>
+        V2.3 ist die stabile Driver-Market-Version. Commands und Funktionen, die erst für V3 geplant sind,
+        sind unten klar markiert, damit man sofort erkennt, was offiziell schon existiert – und was noch nicht.
+      </p>
+    </div>
+    <div class="grid">
+      <div class="info-card"><h3>⚡ Direkte Eingabe</h3><p><code>/adddriver</code>, <code>/editdriver</code> und <code>/transferdriver</code> funktionieren ohne zusätzliches Popup-Fenster.</p></div>
+      <div class="info-card"><h3>💶 Automatische Werte</h3><p>Marktwert, Gehalt und Klauseln werden sauber als Millionen-Euro-Werte dargestellt.</p></div>
+      <div class="info-card"><h3>💾 Persistente Daten</h3><p>Railway-Volume und Backups schützen Fahrer-, Vertrags- und Transferdaten bei Updates.</p></div>
+      <div class="info-card"><h3>🔐 Rollen & Rechte</h3><p>Eine Rolle wie <strong>Transferleitung</strong> kann Verwaltungs-Commands freigeben, ohne breite Serverrechte zu brauchen.</p></div>
+      <div class="info-card"><h3>🧾 Vertragslogik</h3><p>Vertragsdaten, Boni und verschiedene Klauselarten lassen sich strukturiert speichern.</p></div>
+      <div class="info-card"><h3>🎨 WTV-Design</h3><p>Rot, Grün und Weiß aus eurem WTV-Serverprofilbild bilden die Hauptfarben des Bots und dieser Website.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-heading">
+      <div class="eyebrow">Einrichtung</div>
+      <h2>Was muss man beim Driver Market machen?</h2>
+      <p>Der Bot ist für den WTV-Server gedacht und läuft 24/7 über Railway. Für Teamrollen und automatische Wechsel müssen die Discord-Rollen stimmen.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-number">1</div><h3>Bot hinzufügen</h3><p>Über den Installationsbutton den gewünschten Discord-Server auswählen.</p></div>
+      <div class="step"><div class="step-number">2</div><h3>Berechtigungen prüfen</h3><p>Nachrichten, Embeds und für Teamwechsel auch „Rollen verwalten“ erlauben.</p></div>
+      <div class="step"><div class="step-number">3</div><h3>Teamrollen einrichten</h3><p>Die Teamrollen im Server müssen mit der Bot-Konfiguration zusammenpassen.</p></div>
+      <div class="step"><div class="step-number">4</div><h3>Im Testkanal prüfen</h3><p>Fahrer, Rollen und Transfers zuerst in einem privaten Kanal ausprobieren.</p></div>
+    </div>
+    <div class="note"><strong>Wichtig:</strong> Die Bot-Rolle muss über den Teamrollen stehen, wenn der Bot Teamrollen automatisch vergeben oder entfernen soll.</div>
+    <div class="note"><strong>Updates:</strong> Wenn der Bot bereits installiert ist, muss er bei normalen Code-Updates nicht neu eingeladen werden.</div>
+  </div>
+</section>
+
+<section id="driver-commands">
+  <div class="container">
+    <div class="section-heading">
+      <div class="eyebrow">⌨ Commands</div>
+      <h2>Driver Market Commands</h2>
+      <p>Hier siehst du direkt, welche Commands in der offiziellen V2.3 verfügbar sind und welche erst für V3 geplant sind.</p>
+    </div>
+
+    <div class="legend">
+      <span class="badge stable">V2.3 offiziell vorhanden</span>
+      <span class="badge v3">kommt erst in V3</span>
+    </div>
+
+    <div class="command-groups" style="margin-top:16px">
+      <div class="command-group">
+        <h3>👥 Öffentliche Commands</h3>
+        <div class="command-list">
+          <div class="command stable"><div class="command-main"><code>/drivermarket</code><span>Teams, Fahrer, Marktwerte und Vertragsinfos anzeigen</span></div><span class="badge stable">V2.3</span></div>
+<div class="command stable"><div class="command-main"><code>/alldrivers</code><span>alle Fahrer kompakt auflisten</span></div><span class="badge stable">V2.3</span></div>
+<div class="command stable"><div class="command-main"><code>/driverinfo</code><span>Details zu einem Fahrer anzeigen</span></div><span class="badge stable">V2.3</span></div>
+          <div class="command v3"><div class="command-main"><code>/topmarketvalue</code><span>wertvollste Fahrer / Marktwert-Rangliste</span></div><span class="badge v3">V3</span></div>
+<div class="command v3"><div class="command-main"><code>/driverhistory</code><span>Historie eines Fahrers anzeigen</span></div><span class="badge v3">V3</span></div>
+<div class="command v3"><div class="command-main"><code>/transfers</code><span>letzte Transfers öffentlich anzeigen</span></div><span class="badge v3">V3</span></div>
+        </div>
+      </div>
+
+      <div class="command-group">
+        <h3>🛠️ Verwaltung / Admin</h3>
+        <div class="command-list">
+          <div class="command stable"><div class="command-main"><code>/adddriver</code><span>Fahrer hinzufügen</span></div><span class="badge stable">V2.3</span></div>
+<div class="command stable"><div class="command-main"><code>/editdriver</code><span>Fahrer- und Vertragsdaten bearbeiten</span></div><span class="badge stable">V2.3</span></div>
+<div class="command stable"><div class="command-main"><code>/transferdriver</code><span>Fahrer transferieren und Teamrolle anpassen</span></div><span class="badge stable">V2.3</span></div>
+<div class="command stable"><div class="command-main"><code>/removedriver</code><span>Fahrer entfernen</span></div><span class="badge stable">V2.3</span></div>
+<div class="command stable"><div class="command-main"><code>/help</code><span>Hilfe / Übersicht</span></div><span class="badge stable">V2.3</span></div>
+<div class="command stable"><div class="command-main"><code>/saison</code><span>Saison-Übersicht</span></div><span class="badge stable">V2.3</span></div>
+<div class="command stable"><div class="command-main"><code>/datastatus</code><span>Datenbank-/Speicherstatus anzeigen</span></div><span class="badge stable">V2.3</span></div>
+<div class="command stable"><div class="command-main"><code>/auditlog</code><span>Verwaltungsänderungen nachvollziehen</span></div><span class="badge stable">V2.3</span></div>
+<div class="command stable"><div class="command-main"><code>/seasonstatus</code><span>Saisonstatus prüfen</span></div><span class="badge stable">V2.3</span></div>
+<div class="command stable"><div class="command-main"><code>/version</code><span>aktuelle Bot-Version anzeigen</span></div><span class="badge stable">V2.3</span></div>
+          <div class="command v3"><div class="command-main"><code>/renewcontract</code><span>Vertrag gezielt verlängern</span></div><span class="badge v3">V3</span></div>
+<div class="command v3"><div class="command-main"><code>/setmarketvalue</code><span>Marktwert direkt setzen</span></div><span class="badge v3">V3</span></div>
+<div class="command v3"><div class="command-main"><code>/newseason</code><span>neue Saison mit Bestätigung starten</span></div><span class="badge v3">V3</span></div>
+<div class="command v3"><div class="command-main"><code>/undoseason</code><span>letzten Saisonwechsel rückgängig machen</span></div><span class="badge v3">V3</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Hinweis:</strong> Alles mit dem goldenen <strong>V3</strong>-Badge ist in der offiziellen
+      Driver-Market-Hauptversion <strong>V2.3</strong> noch nicht enthalten und ist für die V3-Entwicklung vorgesehen.
+    </div>
+  </div>
+</section>
+
+<section id="driver-versions">
+  <div class="container">
+    <div class="section-heading">
+      <div class="eyebrow">Versionsverlauf</div>
+      <h2>Driver Market Entwicklung</h2>
+      <p>Von der ersten Idee bis zur stabilen V2.3 und der separaten V3-Entwicklung.</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-version">V1 / Anfang</div><p>Grundidee mit Fahrermarkt, Fahrer hinzufügen/entfernen und einfacher Speicherung.</p></div>
+      <div class="timeline-item"><div class="timeline-version">V2</div><p>Erweiterung um <code>/alldrivers</code>, <code>/driverinfo</code>, <code>/editdriver</code> und <code>/transferdriver</code>.</p></div>
+      <div class="timeline-item"><div class="timeline-version">V2.1</div><p>Stabilisierung der V2-Reihe und weiterer Ausbau der Liga-Nutzung.</p></div>
+      <div class="timeline-item"><div class="timeline-version">V2.2</div><p>Erweiterte stabile Version mit Hilfe/Saison-Übersicht und verbessertem Rechte-System.</p></div>
+      <div class="timeline-item current"><div class="timeline-version">V2.3 • STABIL</div><p><strong>Aktuelle Hauptversion.</strong> Direkte Eingabe, bessere Datensicherheit, Audit-/Saisonstatus und WTV Rot–Grün–Weiß-Design.</p></div>
+      <div class="timeline-item dev"><div class="timeline-version">V3 • ENTWICKLUNG</div><p>Zusätzliche Marktwert-, Vertrags-, Transfer-, Historien- und Saisonfunktionen werden getrennt entwickelt und getestet.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-heading">
+      <div class="eyebrow">FAQ</div>
+      <h2>Driver Market – häufige Fragen</h2>
+    </div>
+    <div class="faq">
+      <details><summary>Muss mein PC eingeschaltet sein?</summary><p>Nein. Der Bot läuft 24/7 über Railway.</p></details>
+      <details><summary>Muss ich den Bot nach einem Update neu installieren?</summary><p>Nein. Derselbe Discord-Bot läuft nach einem neuen Deployment mit dem aktualisierten Code weiter.</p></details>
+      <details><summary>Warum braucht der Bot „Rollen verwalten“?</summary><p>Nur wenn er Teamrollen automatisch ändern soll – z. B. bei Transfers.</p></details>
+      <details><summary>Kann jeder Verwaltungs-Commands nutzen?</summary><p>Nein. Diese können auf Admins oder eine spezielle Rolle wie „Transferleitung“ begrenzt werden.</p></details>
+      <details><summary>Was passiert ohne Teamrolle?</summary><p>Der Fahrer kann als Free Agent bzw. freier Fahrer behandelt werden.</p></details>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="prediction">
+  <div class="container">
+    <div class="hero-split">
+      <div>
+        <div class="eyebrow">🎯 WTV Prediction • V1</div>
+        <h2>Tipps für jedes Rennwochenende</h2>
+        <p>
+          WTV Prediction ist euer Tipp-Bot für Race Weekends. Servermitglieder werden direkt als auswählbare Fahrer
+          verwendet. Dazu kommen Fastest Lap, DNF, Safety Car, Bonusfragen, optionale Sprint-Tipps, ein Leaderboard
+          und ein Saison-Reset für den Neustart bei 0 Punkten.
+        </p>
+        <div class="buttons">
+          <a class="button discord" href="https://discord.com/oauth2/authorize?client_id=1543623325778182235" target="_blank" rel="noopener">➕ Prediction hinzufügen</a>
+          <a class="button secondary" href="#prediction-commands">⌨ Commands</a>
+          <a class="button secondary" href="WTV_Prediction_Bot_V1.zip" download>⬇ V1 herunterladen</a>
+        </div>
+      </div>
+      <div class="panel logo-card">
+        <img src="prediction-icon.png" alt="WTV Prediction Icon">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-heading">
+      <div class="eyebrow">Funktionen</div>
+      <h2>Was kann WTV Prediction?</h2>
+      <p>Die aktuelle Website-Reihe wird bewusst als <strong>V1</strong> geführt.</p>
+    </div>
+    <div class="grid">
+      <div class="info-card green"><h3>🎯 Pole & Podium</h3><p>Pole, P1, P2 und P3 direkt über Discord-Mitglieder auswählen.</p></div>
+      <div class="info-card green"><h3>⚡ Fastest Lap</h3><p>Zusätzlich den Fahrer mit der schnellsten Rennrunde tippen.</p></div>
+      <div class="info-card green"><h3>💥 DNF</h3><p>Optional einen DNF-Fahrer tippen; leer lassen bedeutet „Kein DNF“.</p></div>
+      <div class="info-card green"><h3>🚨 Safety Car</h3><p>Ja/Nein-Tipp für mindestens ein Safety Car.</p></div>
+      <div class="info-card green"><h3>🏃 Sprint optional</h3><p>Beim Erstellen der Runde Sprint Ja/Nein wählen; Sprint-Tipps nur bei Sprint-Wochenenden nötig.</p></div>
+      <div class="info-card green"><h3>🎁 Bonusfragen</h3><p>Zwei-Antwort-Bonusfragen mit frei definierbaren Punkten.</p></div>
+      <div class="info-card green"><h3>⏰ Flexible Deadline</h3><p>Deadline freiwillig. Mit Deadline gibt es Erinnerungen und automatische Schließung.</p></div>
+      <div class="info-card green"><h3>🏆 Leaderboard</h3><p>Gesamtwertung und History über alle ausgewerteten Runden.</p></div>
+      <div class="info-card green"><h3>🧹 Saison-Reset</h3><p>Alle Prediction-Daten nach Saisonende löschen und wieder bei 0 starten.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-heading">
+      <div class="eyebrow">Ablauf</div>
+      <h2>So funktioniert WTV Prediction</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-number">1</div><h3>Runde erstellen</h3><p>Mit <code>/newprediction</code> Grand Prix, Sprint Ja/Nein und optional eine Deadline setzen.</p></div>
+      <div class="step"><div class="step-number">2</div><h3>Tippen</h3><p>Mit <code>/predict</code> Discord-Mitglieder als Fahrer auswählen und den Tipp speichern.</p></div>
+      <div class="step"><div class="step-number">3</div><h3>Ergebnis eintragen</h3><p>Nach dem Rennen trägt die Predictionleitung das echte Ergebnis ein.</p></div>
+      <div class="step"><div class="step-number">4</div><h3>Punkte & Tabelle</h3><p>Der Bot rechnet alles aus und aktualisiert automatisch die Gesamtwertung.</p></div>
+    </div>
+    <div class="note"><strong>Ohne Deadline:</strong> Die Runde bleibt offen, bis <code>/closeprediction</code> oder <code>/setpredictionresult</code> verwendet wird.</div>
+    <div class="note"><strong>Mit Deadline:</strong> Der Bot erinnert 60 und 15 Minuten vorher und sperrt danach weitere Änderungen.</div>
+  </div>
+</section>
+
+<section id="prediction-commands">
+  <div class="container">
+    <div class="section-heading">
+      <div class="eyebrow">⌨ Commands</div>
+      <h2>Prediction V1 Commands</h2>
+      <p>Die Command-Karten haben wie gewünscht einen Hover-Effekt.</p>
+    </div>
+    <div class="command-groups">
+      <div class="command-group">
+        <h3>👥 Für alle</h3>
+        <div class="command-list">
+          <div class="command pred"><code>/predict</code><span>Prediction abgeben oder ändern</span></div>
+<div class="command pred"><code>/bonuspredict</code><span>Bonusfrage beantworten</span></div>
+<div class="command pred"><code>/myprediction</code><span>eigenen Tipp ansehen</span></div>
+<div class="command pred"><code>/predictioninfo</code><span>aktuelle Runde anzeigen</span></div>
+<div class="command pred"><code>/predictionstandings</code><span>Gesamtwertung anzeigen</span></div>
+<div class="command pred"><code>/predictionhistory</code><span>vergangene Runden anzeigen</span></div>
+<div class="command pred"><code>/bonusquestions</code><span>Bonusfragen anzeigen</span></div>
+<div class="command pred"><code>/predictionhelp</code><span>Hilfe anzeigen</span></div>
+        </div>
+      </div>
+      <div class="command-group">
+        <h3>🛠️ Predictionleitung / Admin</h3>
+        <div class="command-list">
+          <div class="command pred"><code>/newprediction</code><span>neue Runde erstellen</span></div>
+<div class="command pred"><code>/addbonusquestion</code><span>Bonusfrage hinzufügen</span></div>
+<div class="command pred"><code>/setbonusanswer</code><span>Bonusfrage auswerten</span></div>
+<div class="command pred"><code>/closeprediction</code><span>Runde manuell schließen</span></div>
+<div class="command pred"><code>/setpredictionresult</code><span>Ergebnis eintragen und auswerten</span></div>
+<div class="command pred"><code>/allpredictions</code><span>alle Tipps ansehen</span></div>
+<div class="command pred"><code>/deletepredictionround</code><span>aktuelle Test-/Fehlerrunde löschen</span></div>
+<div class="command pred"><code>/resetpredictionseason</code><span>Saison-Daten löschen und wieder bei 0 starten</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="prediction-versions">
+  <div class="container">
+    <div class="section-heading">
+      <div class="eyebrow">Versionsverlauf</div>
+      <h2>Prediction Entwicklung</h2>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item current">
+        <div class="timeline-version">V1 • AKTUELL</div>
+        <p>Erste offizielle Website-Version mit direkter Mitglieder-Auswahl, optionaler Deadline, Sprint, Bonusfragen, Leaderboard und Saison-Reset.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="installation">
+  <div class="container">
+    <div class="install-shell">
+      <div class="section-heading">
+        <div class="eyebrow">Discord Installation</div>
+        <h2>Beide Bots direkt hinzufügen</h2>
+        <p>Ganz oben und hier unten findest du die offiziellen Installationsbuttons noch einmal gesammelt.</p>
+      </div>
+      <div class="install-grid">
+        <div class="install-card">
+          <h3>🏎️ WTV Driver Market</h3>
+          <p>Für Fahrer, Marktwerte, Verträge, Transfers, Rollen und Saisonverwaltung.</p>
+          <div class="buttons">
+            <a class="button discord" href="https://discord.com/oauth2/authorize?client_id=1542611010941231144" target="_blank" rel="noopener">➕ Driver Market hinzufügen</a>
+            <a class="button secondary" href="#driver-commands">Commands</a>
+          </div>
+        </div>
+        <div class="install-card">
+          <h3>🎯 WTV Prediction V1</h3>
+          <p>Für Renn-Tipps, Bonusfragen, Leaderboard, Erinnerungen und Saisonwertung.</p>
+          <div class="buttons">
+            <a class="button discord" href="https://discord.com/oauth2/authorize?client_id=1543623325778182235" target="_blank" rel="noopener">➕ Prediction hinzufügen</a>
+            <a class="button secondary" href="WTV_Prediction_Bot_V1.zip" download>⬇ V1 herunterladen</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">WTV Bots • Driver Market V2.3 + Prediction V1 • Stand 30.08.2026</div>
+</footer>
+</body>
+</html>
